@@ -1,9 +1,11 @@
-tl_queue = [];
+Ôªøtl_queue = [];
 fr_queue = [];
 ur_queue = [];
-
+hoge
+    fuga
+    
 /*html templates*/
-THUMNAIL_TEMP = "<td class='thumbnail'><span><a href='/run_appli.pl?id=7157&owner_id=2404403'><img src='http://i.rekoo.com/static/mixi/farm/images/feed/everyday_login_feed.jpg' alt='ÅuÉTÉìÉVÉÉÉCÉìñqèÍÅvÇ≈ÉçÉOÉCÉìÉvÉåÉ[ÉìÉgÇÉQÉbÉgÇµÅc' height='76' width='76' /></a></span></td>";
+THUMNAIL_TEMP = "<td class='thumbnail'><span><a href='/run_appli.pl?id=7157&owner_id=2404403'><img src='http://i.rekoo.com/static/mixi/farm/images/feed/everyday_login_feed.jpg' alt='„Äå„Çµ„É≥„Ç∑„É£„Ç§„É≥ÁâßÂ†¥„Äç„Åß„É≠„Ç∞„Ç§„É≥„Éó„É¨„Çº„É≥„Éà„Çí„Ç≤„ÉÉ„Éà„Åó‚Ä¶' height='76' width='76' /></a></span></td>";
 
 tmixer = { 
    replaceVoice: function () {
@@ -30,7 +32,7 @@ tmixer = {
          var mymixiList = $(doc).find("#mymixiList");
          
          
-         $(mymixiList).find("h2").text("Twitter friends (" + ur_queue[0].friends_count + ")"); //É}ÉCÉ~ÉNÉVêî
+         $(mymixiList).find("h2").text("Twitter friends (" + ur_queue[0].friends_count + ")"); //„Éû„Ç§„Éü„ÇØ„Ç∑Êï∞
          var iconListTable = $(mymixiList).find(".iconListTable");
          var i=0;
          $(iconListTable).find("tr").each(function(){
