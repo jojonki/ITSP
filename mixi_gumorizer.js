@@ -1,9 +1,12 @@
-﻿tl_queue = [];
-fr_queue = [];
-ur_queue = [];
-    
-/*html templates*/
+﻿/*html templates*/
 THUMNAIL_TEMP = "<td class='thumbnail'><span><a href='/run_appli.pl?id=7157&owner_id=2404403'><img src='http://i.rekoo.com/static/mixi/farm/images/feed/everyday_login_feed.jpg' alt='「サンシャイン牧場」でログインプレゼントをゲットし…' height='76' width='76' /></a></span></td>";
+
+function str_to_date(date_str) {
+    var date = date_str.replace(/-|T|:/g,",").replace(/Z/,"").split(",");
+    //date = new Date(date[0], date[1]-1, date[2], parseInt(date[3])+9, date[4], date[5]).toLocaleString();
+    str = date[1] + "/" + date[2] + " " + String(parseInt(date[3])+9) + ":" + date[4]; 
+    return str;
+}
 
 tmixer = { 
    replaceVoice: function () {
@@ -28,8 +31,6 @@ tmixer = {
     insertTwitterFriends: function (){
          var doc = jetpack.tabs.focused.contentDocument;
          var mymixiList = $(doc).find("#mymixiList");
-         
-         
          $(mymixiList).find("h2").text("Twitter friends (" + ur_queue[0].friends_count + ")"); //マイミクシ数
          var iconListTable = $(mymixiList).find(".iconListTable");
          var i=0;
@@ -48,18 +49,12 @@ tmixer = {
                 i++;
              });
          });
-         /*$.each(tl_queue, function(){
-            jetpack.tabs.focused.contentWindow.alert(this.text);
-         });*/
         
     },
    insertTweet: function(){
          var doc = jetpack.tabs.focused.contentDocument;
          var mymixiList = $(doc).find("#appliUpdate");
          $(mymixiList).find("h3").text("tweet"); //header
-         //jetpack.tabs.focused.contentWindow.alert(mymixiList.find(".appliLogBody").html());
-         //var tweetLine = $(mymixiList).find(".appliLogBody");
-         
 
          var i = 0;
          $(mymixiList).find(".appliLogItem").each(function() {
@@ -76,7 +71,30 @@ tmixer = {
          });
    },
    
+   insertNews: function(){
+        var doc = jetpack.tabs.focused.contentDocument;
+        var newsList = $(doc).find("#newBbs");
+        $(newsList).find("h3").text("News List");
+        $(newsList).find("h4").text("Headlilne");
+        var i=0;
+        $(newsList).find("dt").each(function(){ //published date
+            $(this).find("span").text(nw_queue[i].published);
+            var cssValue = "url(http://www.google.co.jp/reader/ui/favicon.ico)";
+            $(this).find("span").css("background-image", cssValue);
+            i++;
+        });
+        
+        i=0;
+        $(newsList).find("dd").each(function(){
+            var item = "<a href='" + nw_queue[i].url + "'>" + nw_queue[i].title + "</a>";
+            $(this).html(item);
+            i++;
+        });
+        
+   },
+   
    initiate: function (tm) {
+       ///*
        $.ajax({
          type: "GET",
          url: "http://twitter.com/statuses/friends_timeline.json",
@@ -96,8 +114,10 @@ tmixer = {
            console.log(status + ' ' + error);
          }    
        });
+       //*/
        
        /* a user's friends status. */
+       ///*
        $.ajax({
          type: "GET", 
          url: "http://twitter.com/statuses/friends.json?count=10",
@@ -118,8 +138,10 @@ tmixer = {
            console.log(status + ' ' + error);
          }    
        });
+       //*/
        
        /* a user's status. */
+       ///*
        $.ajax({
          type: "GET", 
          url: " http://twitter.com/statuses/user_timeline.json",
@@ -139,9 +161,30 @@ tmixer = {
            console.log(status + ' ' + error);
          }    
        });
+       //*/
+       /*google reader*/
+       $.ajax({
+             type: "GET", 
+             url: "http://www.google.com/reader/atom/user/-/state/com.google/reading-list",
+             dataType: "xml",
+             success: function (articles) {
+                $(articles).find("entry").each(function() {
+                    nw_queue.push({
+                        title: $(this).find("title").text(),
+                        url: $(this).find("link").attr("href"),
+                        published: str_to_date( $(this).find("updated").text() ),
+                    });
+                });
+             },
+             error: function (req, status, error) {
+               console.log(status + ' ' + error);
+             }    
+       });
+       
        tmixer.replaceVoice();
        tmixer.insertTwitterFriends();
        tmixer.insertTweet();
+       tmixer.insertNews();
      },// end initiate()
      
      test: function(){
@@ -153,6 +196,10 @@ tmixer = {
 jetpack.statusBar.append({
    html:  "<img src='http://a1.twimg.com/a/1260166426/images/favicon.ico'/>",
    onReady:function(tm) {
+        tl_queue = [];
+        fr_queue = [];
+        ur_queue = [];
+        nw_queue = []
        //var tm_obj = new tmixer(tm);
        $("body", tm).css({cursor:"pointer"});
        $(tm).click( function(){ tmixer.initiate(tm) } );
