@@ -1,8 +1,6 @@
 ﻿tl_queue = [];
 fr_queue = [];
 ur_queue = [];
-hoge
-    fuga
     
 /*html templates*/
 THUMNAIL_TEMP = "<td class='thumbnail'><span><a href='/run_appli.pl?id=7157&owner_id=2404403'><img src='http://i.rekoo.com/static/mixi/farm/images/feed/everyday_login_feed.jpg' alt='「サンシャイン牧場」でログインプレゼントをゲットし…' height='76' width='76' /></a></span></td>";
