@@ -125,7 +125,7 @@ jetpack.statusBar.append({
     onReady: function(widget) {
         jetpack.slideBar.append({
             icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
-            url:       "http://www.goto.info.waseda.ac.jp/~junki/test.html",
+            url:       "http://app-jonki.appspot.com/",
             width:    350,
             persists: true,
             onClick:  function(slider) {slider.slide(this.width, true);},
@@ -138,10 +138,10 @@ jetpack.statusBar.append({
                     td.run(slider);
                     $(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
                 });
-                jetpack.tabs.onReady(function(doc) {
+                /*jetpack.tabs.onReady(function(doc) {
                     $("a", doc).filter(function() {return testUrl(this.href);})
                                .click( function() {return !(enabled && !onClick(this.href));}); 
-                });
+                });*/
             }
         });
     }
