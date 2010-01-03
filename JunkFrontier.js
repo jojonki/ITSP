@@ -8,12 +8,14 @@ YahooAPI.prototype = {
     initiate: function (str, slider) {
         var keyword = "";
         str = encodeURI(str);
+        //self = this;
+        // this.keyword = "";
+        //jetpack.tabs.focused.contentWindow.alert(self.key_req_url + str);
         $.ajax({
             type: "GET",
             url: this.key_req_url + str,
             dataType: "xml",
             success: function (keys) {
-                console.log("key@=>" + keyword);
                 var ct = 0;
                 jQuery.each($(keys).find("Result"), function() {
                     
@@ -24,7 +26,6 @@ YahooAPI.prototype = {
                     if(ct>2){return false;}
                 }); //end $.each()
                 $("#keyword", slider.contentDocument).html(keyword);
-                
             },
             error: function (req, status, error) {
                 console.log(status + ' ' + error);
@@ -34,6 +35,7 @@ YahooAPI.prototype = {
 }
 function TextDriver() { /* Life if Funny. */ }
 TextDriver.prototype = {
+    selectedText: "",
     run: function(slider) {
         var mainDoc = jetpack.tabs.focused.contentDocument; self = this;
         var yapi = new YahooAPI();
@@ -42,9 +44,6 @@ TextDriver.prototype = {
                 $(this).css({"outline": "none"});
                 $(this).css({"outline": "5px dashed blue"});
                 $(this).click(function(){
-                    if(self.textClicked == 1) {
-                        return false;
-                    }
                     //jetpack.tabs.focused.contentWindow.alert(jetpack.selection.text);
                     if(jetpack.selection.text != "") {
                         self.selectedText = jetpack.selection.text;
@@ -63,7 +62,6 @@ TextDriver.prototype = {
         );
     },
     getSelectedText: function(){
-        console.log("getSelectedText()");
         return self.selectedText;
     },
 }
@@ -73,6 +71,7 @@ jetpack.statusBar.append({
     html: "<body style='white-space:nowrap;'>"+
               "<a href='#' id='enable' style='background:url(http://users.skumleren.net/cers/test/ytpl/off.png) no-repeat center; width:20px; display:block;cursor:pointer;float:left;'>&nbsp;</a>"+
           "</body>",
+
     onReady: function(widget) {
         jetpack.slideBar.append({
             icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
@@ -80,9 +79,10 @@ jetpack.statusBar.append({
             width:    350,
             persists: true,
             onClick:  function(slider) {slider.slide(this.width, true);},
-            onReady:  function(slider) {x
+            onReady:  function(slider) {
+                //ytpl = slider.contentDocument.wrappedJSObject.ytpl;
+                
                 $("a#enable",widget).click(function() {
-                    console.log("clicked");
                     enabled = !enabled;
                     $(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
                 
