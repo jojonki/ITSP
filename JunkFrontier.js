@@ -39,17 +39,17 @@ TextDriver.prototype = {
     run: function(slider) {
         var mainDoc = jetpack.tabs.focused.contentDocument; self = this;
         var yapi = new YahooAPI();
+        jetpack.selection.onSelection(function(){
+             self.selectedText = jetpack.selection.text;
+             yapi.initiate(self.selectedText, slider);
+             return false;
+        });
+        console.log("after onSelection()");
         $(mainDoc).find("*").hover(
             function(){ // mouse over 
                 $(this).css({"outline": "none"});
                 $(this).css({"outline": "5px dashed blue"});
                 $(this).click(function(){
-                    //jetpack.tabs.focused.contentWindow.alert(jetpack.selection.text);
-                    if(jetpack.selection.text != "") {
-                        self.selectedText = jetpack.selection.text;
-                        yapi.initiate(self.selectedText, slider);
-                        return false;
-                    }
                     self.selectedText = $(this).text();
                     yapi.initiate(self.selectedText, slider);
                      return false;
@@ -80,8 +80,6 @@ jetpack.statusBar.append({
             persists: true,
             onClick:  function(slider) {slider.slide(this.width, true);},
             onReady:  function(slider) {
-                //ytpl = slider.contentDocument.wrappedJSObject.ytpl;
-                
                 $("a#enable",widget).click(function() {
                     enabled = !enabled;
                     $(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
