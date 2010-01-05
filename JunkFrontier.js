@@ -40,16 +40,18 @@ TextDriver.prototype = {
         var mainDoc = jetpack.tabs.focused.contentDocument; self = this;
         var yapi = new YahooAPI();
         jetpack.selection.onSelection(function(){
-             self.selectedText = jetpack.selection.text;
-             yapi.initiate(self.selectedText, slider);
-             return false;
+             if(enabled) {
+                 self.selectedText = jetpack.selection.text;
+                 yapi.initiate(self.selectedText, slider);
+                 return false;
+             }
         });
-        console.log("after onSelection()");
         $(mainDoc).find("*").hover(
             function(){ // mouse over 
                 $(this).css({"outline": "none"});
                 $(this).css({"outline": "5px dashed blue"});
                 $(this).click(function(){
+                    if(jetpack.selection.text != "") return false;
                     self.selectedText = $(this).text();
                     yapi.initiate(self.selectedText, slider);
                      return false;
@@ -74,7 +76,7 @@ jetpack.statusBar.append({
           "</body>",
 
     onReady: function(widget) {
-        if(statusBarOnReady) return false;
+        if(statusBarOnReady) return false; // This line prevent duplicate slidebar's action.
         statusBarOnReady = !statusBarOnReady;
         jetpack.slideBar.append({
             icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
@@ -83,6 +85,7 @@ jetpack.statusBar.append({
             persists: true,
             onClick:  function(slider) {slider.slide(this.width, true);},
             onReady:  function(slider) {
+                console.log("onReady");
                 $("a#enable",widget).click(function() {
                     enabled = !enabled;
                     $(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
@@ -97,12 +100,11 @@ jetpack.statusBar.append({
                 });
                 
                 jetpack.tabs.onFocus(function () {
+                    var mainDoc = jetpack.tabs.focused.contentDocument; 
+                    $(mainDoc).find("*").unbind();
                     if(enabled){
                         enabled = !enabled;
                         $("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
-                    }else{
-                        var mainDoc = jetpack.tabs.focused.contentDocument; 
-                        $(mainDoc).find("*").unbind();
                     }
                 });
             } //end onReady
