@@ -67,12 +67,15 @@ TextDriver.prototype = {
 }
 
 var enabled = false;
+var statusBarOnReady = false;
 jetpack.statusBar.append({
     html: "<body style='white-space:nowrap;'>"+
               "<a href='#' id='enable' style='background:url(http://users.skumleren.net/cers/test/ytpl/off.png) no-repeat center; width:20px; display:block;cursor:pointer;float:left;'>&nbsp;</a>"+
           "</body>",
 
     onReady: function(widget) {
+        if(statusBarOnReady) return false;
+        statusBarOnReady = !statusBarOnReady;
         jetpack.slideBar.append({
             icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
             url:       "http://app-jonki.appspot.com/",
