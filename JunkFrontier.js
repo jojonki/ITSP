@@ -107,7 +107,15 @@ jetpack.statusBar.append({
                         $("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
                     }
                 });
+                jetpack.tabs.onReady(function() { // If page loaded another page in content page, stop this future.
+                    if(enabled){
+                        enabled = !enabled;
+                        $("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                    }
+                });
             } //end onReady
         });
     }
 });
+
+
