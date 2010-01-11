@@ -48,9 +48,9 @@ TextDriver.prototype = {
         });
         $(mainDoc).find("*").hover(
             function(){ // mouse over 
-                $(this).css({"outline": "none"});
-                $(this).css({"outline": "5px dashed blue"});
-                $(this).click(function(){
+                $(this).css({"outline": "none"})
+                          .css({"outline": "3px dashed blue"})
+                          .click(function(){
                     if(jetpack.selection.text != "") return false;
                     self.selectedText = $(this).text();
                     yapi.initiate(self.selectedText, slider);
@@ -71,24 +71,30 @@ TextDriver.prototype = {
 var enabled = false;
 var statusBarOnReady = false;
 jetpack.statusBar.append({
-    html: "<body style='white-space:nowrap;'>"+
+    /*html: "<body style='white-space:nowrap;'>"+
               "<a href='#' id='enable' style='background:url(http://users.skumleren.net/cers/test/ytpl/off.png) no-repeat center; width:20px; display:block;cursor:pointer;float:left;'>&nbsp;</a>"+
+          "</body>",
+    */
+    html: "<body style='white-space:nowrap;'>"+
+              "<a href='#' id='enable' style='background:url(http://www.goto.info.waseda.ac.jp/~junki/ITSP/img/gag/off.png) no-repeat center; width:20px; display:block;cursor:pointer;float:left;margin-top:-1px;'>&nbsp;</a>"+
           "</body>",
 
     onReady: function(widget) {
         if(statusBarOnReady) return false; // This line prevent duplicate slidebar's action.
         statusBarOnReady = !statusBarOnReady;
         jetpack.slideBar.append({
-            icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
+            //icon:     "http://users.skumleren.net/cers/test/ytpl/logo.png",
+            icon:     "http://www.goto.info.waseda.ac.jp/~junki/ITSP/img/gag/logo.png",
             url:       "http://app-jonki.appspot.com/",
-            width:    350,
+            width:    325,
             persists: true,
             onClick:  function(slider) {slider.slide(this.width, true);},
             onReady:  function(slider) {
                 console.log("onReady");
                 $("a#enable",widget).click(function() {
                     enabled = !enabled;
-                    $(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                    //$(this).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                    $(this).css("background-image","url(http://www.goto.info.waseda.ac.jp/~junki/ITSP/img/gag/"+{false:"off",true:"on"}[enabled]+".png)");
                 
                     if(enabled){
                         var td = new TextDriver();
@@ -104,14 +110,17 @@ jetpack.statusBar.append({
                     $(mainDoc).find("*").unbind();
                     if(enabled){
                         enabled = !enabled;
-                        $("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                        //$("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                        $("a#enable", widget).css("background-image","url(http://www.goto.info.waseda.ac.jp/~junki/ITSP/img/gag/"+{false:"off",true:"on"}[enabled]+".png)");
                     }
                 });
                 jetpack.tabs.onReady(function() { // If page loaded another page in content page, stop this future.
                     if(enabled){
                         enabled = !enabled;
-                        $("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                        //$("a#enable", widget).css("background-image","url(http://users.skumleren.net/cers/test/ytpl/"+{false:"off",true:"on"}[enabled]+".png)");
+                        $("a#enable", widget).css("background-image","url(http://www.goto.info.waseda.ac.jp/~junki/ITSP/img/gag/"+{false:"off",true:"on"}[enabled]+".png)");
                     }
+                    
                 });
             } //end onReady
         });
